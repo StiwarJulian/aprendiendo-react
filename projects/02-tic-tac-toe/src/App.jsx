@@ -5,13 +5,21 @@ import confetti from 'canvas-confetti'
 import { WinnerModal } from './components/WinnerModal.jsx'
 import { Board } from './components/Board.jsx'
 import { TurnSelected } from './components/TurnSelected.jsx'
+import { resetGameStorage, saveGameStorage } from './logic/storage/index.js'
 
 function App() {
-  const [board, setBoard] = useState(
-    Array(9).fill(null)
-  )
+  const [board, setBoard] = useState(() => {
+    const boardFromStorage = window.localStorage.getItem('board')
 
-  const [turn, setTurn] = useState(TURNS.X)
+    return boardFromStorage? JSON.parse(boardFromStorage) : Array(9).fill(boardFromStorage)
+  })
+
+  const [turn, setTurn] = useState(() => {
+    const turnFromStorage = window.localStorage.getItem('turn')
+
+    return turnFromStorage ?? TURNS.X 
+  })
+
   const [winner, setWinner] = useState(null)
 
   const updateBoard = (index) => {
@@ -24,6 +32,8 @@ function App() {
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
 
+    saveGameStorage({ board: newBoard, turn: newTurn })
+
     const newWinner = checkWinnerFrom(newBoard)
     if (newWinner) {
       confetti()
@@ -34,6 +44,7 @@ function App() {
   }
 
   const resetGame = () => {
+    resetGameStorage()
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)

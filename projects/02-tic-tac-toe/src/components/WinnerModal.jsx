@@ -1,25 +1,24 @@
-
 import { Square } from './Square'
 
 // eslint-disable-next-line react/prop-types
-export function WinnerModal({winner, resetGame}) {
- if (winner === null) return null
+export function WinnerModal ({ winner, resetGame }) {
+  if (winner === null) return null
 
- const winnerText = winner === false ? 'Empate' : `Gano: `
+  const winnerText = winner === false ? 'Empate' : 'Gano: '
 
- return (
-		<section className='winner'>
-			<div className='text'>
-					<h2>{winnerText}</h2>
+  return (
+    <section className='winner'>
+      <div className='text'>
+        <h2>{winnerText}</h2>
 
-					<header className='win'>
-					{winner && <Square>{winner}</Square>}
-					</header>
+        <header className='win'>
+          {winner && <Square>{winner}</Square>}
+        </header>
 
-					<footer>
-					<button onClick={resetGame}>Empezar De Nuevo</button>
-					</footer>
-			</div>
-		</section>
-	)
+        <footer>
+          <button onClick={resetGame}>Empezar De Nuevo</button>
+        </footer>
+      </div>
+    </section>
+  )
 }
